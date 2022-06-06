@@ -19,6 +19,33 @@ app.get("/", function (request, response) {
 
 //START OF YOUR CODE...
 
+app.get("/quotes" , function (req, res) {
+res.send(quotes)
+})
+
+app.get("/quotes/random" , function(req,res) {
+  res.send(pickFromArray(quotes))
+})
+
+app.get("/quotes/search" , function(req, res){
+  let queryParameter = req.query.term;
+  if (queryParameter) {
+    queryParameter = queryParameter.toLowerCase();
+  }
+
+  const filteredQuotes = quotes.filter(element => {
+    return element.quote.toLowerCase().includes(queryParameter) || element.author.toLowerCase().includes(queryParameter);
+  });
+  if(filteredQuotes.length == 0) {
+    res.status(404).send(filteredQuotes);
+  }
+  res.send(filteredQuotes);
+
+} )
+
+
+
+
 //...END OF YOUR CODE
 
 //You can use this function to pick one element at random from a given array
